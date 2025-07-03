@@ -1,4 +1,15 @@
-app.use(bodyParser.json()); // Thêm dòng này để parse JSON body
+import express from 'express';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import fetch from 'node-fetch';
+
+const app = express();
+const port = process.env.PORT || 3000;
+
+// ⚠️ Phải đặt sau khi tạo app
+app.use(cors());
+app.use(bodyParser.json()); // <- Thêm dòng này nếu gửi JSON
+app.use(bodyParser.urlencoded({ extended: true })); // Giữ dòng này nếu hỗ trợ x-www-form-urlencoded
 
 app.post('/', async (req, res) => {
   try {
@@ -7,7 +18,7 @@ app.post('/', async (req, res) => {
     const response = await fetch(googleScriptURL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(req.body)
+      body: JSON.stringify(req.body) // Gửi JSON đúng định dạng
     });
 
     const text = await response.text();
@@ -16,4 +27,8 @@ app.post('/', async (req, res) => {
     console.error('Proxy error:', error);
     res.status(500).send('Lỗi proxy');
   }
+});
+
+app.listen(port, () => {
+  console.log(`Proxy server đang chạy tại cổng ${port}`);
 });
