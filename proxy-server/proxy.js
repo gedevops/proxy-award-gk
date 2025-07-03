@@ -13,6 +13,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // Giữ dòng này nếu h�
 
 app.post('/', async (req, res) => {
   try {
+    console.log("Proxy received:", req.body);
     const googleScriptURL = 'https://script.google.com/macros/s/AKfycbyJdy3KgthGz8B6mZ4ycUI3-4jzLGqm00wmea4M-D2lQC4EMiFjOmcRq5KwjI8PyXSY/exec';
 
     const response = await fetch(googleScriptURL, {
